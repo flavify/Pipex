@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/21 14:56:35 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/09/24 03:37:30 by fvoicu           ###   ########.fr       */
+/*   Created: 2023/09/22 05:02:22 by fvoicu            #+#    #+#             */
+/*   Updated: 2023/09/22 13:45:28 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "../include/pipex.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+//perror
+void	error(char *msg, char **cmd, int exit_code)
 {
-	size_t	i;
-	size_t	j;
-	char	*s;
+	char	*error;
 
-	s = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!s)
-		return (NULL);
-	i = 0;
-	while (*(s1 + i))
+	if (cmd != NULL)
 	{
-		s[i] = s1[i];
-		i++;
+		free_array(cmd);
 	}
-	j = 0;
-	while (*(s2 + j))
-	{
-		s[i] = s2[j];
-		i++;
-		j++;
-	}
-	s[i] = 0;
-	return (s);
+	error = msg;
+	msg = ft_strjoin_and_free("Error: ", error);
+	ft_putendl_fd(msg, 2);
+	free(msg);
+	exit(exit_code);
 }
