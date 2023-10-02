@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 05:30:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/09/21 15:22:11 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/02 19:00:32 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_putnbr_fd(int n, int fd);
 
 //Adittional functions
 char	*fv_strjoin_and_free(char *s1, char *s2);
+char *fv_strtok(char *str, char *delim);
 
 //Get_next_line
 char	*get_next_line(int fd);
