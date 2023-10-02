@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:03:26 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/09/24 04:13:49 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/01 21:03:12 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_info
 // file_validators
 char	*validate_input_file(char *in_file);
 char	*validate_input_file(char *out_file);
-char	*input_file(char **arg, t_pipex *pipex);
+char	*input_file(char **arg, t_info *pipex);
 char	*output_file(int argc, char **argv);
 
 //error_handling

@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 13:46:18 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/09/22 14:02:28 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/01 21:04:36 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*validate_output_file(char *out_file)
 		return (ft_strjoin(out_file, ": File exists"));
 	return (NULL);
 }
-char	*input_file(char **argv, t_pipex *pipex)
+char	*input_file(char **argv, t_info *pipex)
 {
 	int		arg_index;
 	char	*file_acess;
