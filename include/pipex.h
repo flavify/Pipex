@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:03:26 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/01 21:03:12 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/03 15:17:39 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	*output_file(int argc, char **argv);
 //error_handling
 void	error(char *msg, char **cmd, int exit_code);
 
+//exec
+void	pipex(t_info *pipex, char	*input, char	**argv, char **env, char *output);
 
 
 #endif
