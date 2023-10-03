@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:46:32 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/03 15:19:31 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/04 00:08:03 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	pipex(t_info *pipex, char	*input, char	**argv, char **env, char *output)
 			}
 			close(pipex->fds[0]);
 			close(pipex->fds[1]);
-			execvp(argv[i], argv + i);
-			perror("execvp");
+			execve(argv[i], argv + i);
+			perror("execve");
 			exit(1);
 		}
 		else //-->parent
