@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 05:30:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/07 21:39:50 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/07 21:44:12 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #  define BUFFER_SIZE 1024
 # endif
 # define MAX_FD 4096  //-->take it from sytem limits
+
 typedef struct s_list
 {
 	void			*content;
