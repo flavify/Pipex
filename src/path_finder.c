@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 00:21:44 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/04 01:00:10 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/07 21:54:43 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
@@ -25,6 +24,26 @@ size_t	ft_strlen(const char *s)
 	while (s[i])
 		i++;
 	return (i);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	char	*st;
+
+	while (*s != '\0')
+	{
+		if (*s == (char)c)
+		{
+			st = (char *)s;
+			return (&st[0]);
+		}
+		s++;
+	}
+	if (*s == (char)c)
+	{
+		return (&(*(char *)s));
+	}
+	return (NULL);
 }
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
@@ -46,34 +65,28 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (-s2[i]);
 }
 
-char *fv_strtok(char *str, const char *delim) {
-    static char *buffer;
-    char *token_start, *ptr;
-    
-    if (str)
-        buffer = str;
-    if (!buffer || !delim)
-        return NULL;
+char	*fv_strtok(char *str, const char *delim)
+{
+	static char	*buff;
+	char		*token_start;
 
-    for ( ; *buffer != '\0'; buffer++) {
-        ptr = strchr(delim, *buffer);
-        if (ptr == NULL)
-            break;
-    }
-    if (*buffer == '\0') 
-        return NULL;
-
-    token_start = buffer;
-
-    for ( ; *buffer != '\0'; buffer++) {
-        ptr = strchr(delim, *buffer);
-        if (ptr != NULL) {
-            *buffer = '\0';
-            buffer++;
-            break;
-        }
-    }
-    return token_start;
+	if (str)
+		buff = str;
+	if (!buff || !delim)
+		return (NULL);
+	while (*buff && ft_strchr(delim, *buff))
+		++buff;
+	if (!(*buff))
+		return (NULL);
+	token_start = buff;
+	while (*buff && !ft_strchr(delim, *buff))
+		++buff;
+	if (*buff)
+	{
+		*buff = '\0';
+		++buff;
+	}
+	return (token_start);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -111,7 +124,7 @@ char	*fv_strjoin_and_free(char *s1, char *s2)
 	return (tmp);
 }
 
-char *find_command_path(char *arg, char **env)
+char	*get_path(char *arg, char **env)
 {
 	char	*path;
 	char	*full_path;
@@ -125,55 +138,42 @@ char *find_command_path(char *arg, char **env)
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
 			path = env[i] + 5;
-			break;
+			break ;
 		}
 		++i;
 	}
 	if (!path)
 		return (NULL);
-	token = strtok(path, ":");
+	token = fv_strtok(path, ":");
 	while (token)
 	{
 		full_path = fv_strjoin_and_free(ft_strjoin(token, "/"), arg);
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
 		free (full_path);
-		token = strtok(NULL, ":");
+		token = fv_strtok(NULL, ":");
 	}
 	return (NULL);
 }
 
-
 #include <stdio.h>
+#include <stdlib.h>
 
-// Assume you've included the necessary headers and have the find_command_path function defined above.
+// Assuming you have necessary function prototypes above
+// ...
 
-int main() {
-    // Mock environment, typically you'd get this from the 3rd argument to main in a real program.
-    char *mock_env[] = {
-        "HOME=/home/user",
-        "PATH=/usr/bin:/bin:/usr/local/bin",
-        "LOGNAME=user",
-        NULL // Terminating NULL pointer
-    };
+int main(int argc, char **argv, char **envp) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <command>\n", argv[0]);
+        return 1;
+    }
 
-    // List of commands to search for
-    char *commands[] = {
-        "ls",
-        "gcc",
-        "nonexistent_command", // This one shouldn't be found
-        "cat",
-        NULL // Terminating NULL pointer
-    };
-
-    for (int i = 0; commands[i]; i++) {
-        char *path = find_command_path(commands[i], mock_env);
-        if (path) {
-            printf("%s found at: %s\n", commands[i], path);
-            free(path); // Don't forget to free the allocated path after using it
-        } else {
-            printf("%s not found in PATH\n", commands[i]);
-        }
+    char *command_path = get_path(argv[1], envp);
+    if (command_path) {
+        printf("Path for command %s: %s\n", argv[1], command_path);
+        free(command_path);  // Don't forget to free the memory!
+    } else {
+        printf("Command %s not found in PATH.\n", argv[1]);
     }
 
     return 0;
