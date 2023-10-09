@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 00:21:44 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/09 14:16:35 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/09 16:28:52 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,3 +47,5 @@ char	*get_path(char *arg, char **env)
 	}
 	return (NULL);
 }
+
+//---> full path of the command

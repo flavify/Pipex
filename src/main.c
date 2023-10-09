@@ -6,14 +6,67 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:46:32 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/04 00:08:03 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:47:23 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 #include <stdio.h>
 #include <stdlib.h>
-// change execvp to execve
+
+
+static void	exec_cmd(t_info *pipex, char **args, char **env)
+{
+	dup2(pipex->fd[0], STDIN_FILENO);
+	dup2(pipex->fd[1], STDOUT_FILENO);
+	if (pipex->fd[0] != STDIN_FILENO)
+		close(pipex->fd[0]);
+	if (pipex->fd[1] != STDOUT_FILENO)
+		close(pipex->fd[1]);
+	execve (pipex->cmd_path, args, env);
+	perror ("execve");
+	exit (1);
+}
+
+void	pipex(t_info *pipex, char **env, char *input, char *output)
+{
+	int prev_fd;
+	int i;	
+	
+	i = 2;
+	pipex->pid = malloc (sizeof(int) * (pipex->argc - 3));
+	while (i < (pipex->argc - 1))
+	{
+		pipex->cmd_path = get_path(pipex->argv[i], env);
+		
+		pipe(pipex->fd);
+		
+		if (!(pipex->pid = fork()))
+		{
+			if(prev_fd != -1)
+				close(prev_fd);			
+		}
+		
+		
+		++i;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void	pipex(t_info *pipex, char	*input, char	**argv, char **env, char *output)
 {
@@ -21,12 +74,15 @@ void	pipex(t_info *pipex, char	*input, char	**argv, char **env, char *output)
 	int	fd_out;
 	int	prev_pipe_read_end;
 	int	i;
+	char	*cmd_path;
 
 	i = 2; //index for argv
 	prev_pipe_read_end = -1; //For first command ---> input file
 	while (i < pipex->argc - 1)
 	{
+		cmd_path = get_path(argv[i], env);
 		pipe(pipex->fds);
+		
 		if (!(pipex->pid = fork())) //-->child
 		{
 			if (prev_pipe_read_end != -1) //not first command
@@ -60,7 +116,7 @@ void	pipex(t_info *pipex, char	*input, char	**argv, char **env, char *output)
 			}
 			close(pipex->fds[0]);
 			close(pipex->fds[1]);
-			execve(argv[i], argv + i);
+			execve(cmd_path, argv + i, env);
 			perror("execve");
 			exit(1);
 		}
@@ -71,15 +127,18 @@ void	pipex(t_info *pipex, char	*input, char	**argv, char **env, char *output)
 				close(prev_pipe_read_end);
 			prev_pipe_read_end = pipex->fds[0];	
 		}
-		i++; // --->next command
+		free(cmd_path);
+		++i; // --->next command
 	}
 	i = 2; //reset counter
 	while (i < pipex->argc - 1)
 	{
 		wait(NULL); //wait for all children to finish
-		i++;
+		++i;
 	}
 }
+
+
 
 int	main(int argc, char **argv, char **env)
 {
@@ -103,3 +162,29 @@ int	main(int argc, char **argv, char **env)
 	pipex(&t_pipex , input, argv, env, output);
 	return (0);
 }
+
+// #include <stdio.h>
+
+// extern char **environ;
+
+// int main(void)
+// {
+//     t_info pipex_info;
+//     char *input = "input.txt";
+//     char *output = "output.txt";
+//     char *argv[] = {"pipex", "cat", "grep test", NULL}; // pipex is just a placeholder for argv[0]
+//     char **env = environ;
+
+
+//     pipex(&pipex_info, input, argv, env, output);
+
+//     // Read the output file to see if it contains the line with "test".
+//     FILE *fp = fopen(output, "r");
+//     char line[256];
+//     while (fgets(line, sizeof(line), fp)) {
+//         printf("%s", line); // Should print "this is a test" if everything worked correctly
+//     }
+//     fclose(fp);
+
+//     return 0;
+// }

@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 13:46:18 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/01 21:04:36 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/09 19:22:50 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,3 @@ char	*output_file(int argc, char **argv)
 		error(file_acess, NULL, 1);
 	// if stt for every file_access case 
 }
-
-
-//is_here_doc checker
