@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 05:30:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/07 21:44:12 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/12 16:18:02 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 # define LIBFT_H
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
-# define MAX_FD 4096  //-->take it from sytem limits
+# define MAX_FD 4096
 
 typedef struct s_list
 {
@@ -64,6 +65,8 @@ void	ft_putnbr_fd(int n, int fd);
 //Adittional functions
 char	*fv_strjoin_and_free(char *s1, char *s2);
 char	*fv_strtok(char *str, const char *delim);
+char	**fv_split(char const *s, char c);
+bool	fv_is_space(char c);
 
 //Get_next_line
 char	*get_next_line(int fd);

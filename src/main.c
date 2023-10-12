@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:46:32 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/09 18:47:23 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/12 15:47:44 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//parsy_parse, get_cmd
+
+static char	***prep_cmd(t_info *pipex, int arg_idx)
+{
+	char	**cmd;
+
+	if (ft_strncmp(pipex->argv[arg_idx], "./", 2))
+	{
+		cmd = ft_split(parsy_parse(pipex->argv[arg_idx]), ' ');
+		cmd = get_cmd(cmd);
+	}
+	else
+		cmd = 
+}
 
 static void	exec_cmd(t_info *pipex, char **args, char **env)
 {
@@ -24,7 +38,7 @@ static void	exec_cmd(t_info *pipex, char **args, char **env)
 	if (pipex->fd[1] != STDOUT_FILENO)
 		close(pipex->fd[1]);
 	execve (pipex->cmd_path, args, env);
-	perror ("execve");
+	perror ("execve"); 
 	exit (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:03:26 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/09 18:58:00 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/10/12 15:07:37 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 typedef struct s_info
 {
 	char	**argv;
-	int		argc;
-	int		fd[2]; //read--> 0 | write--> 1 | here_doc-->2
+	char	**env;
+	int		fd[2]; //read--> 0 | write--> 1
 	char	*cmd_path;
 	bool	here_doc;
 	pid_t	*pid;
