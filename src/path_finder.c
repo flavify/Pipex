@@ -6,11 +6,28 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 00:21:44 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/09 16:28:52 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/02 00:49:54 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h" 
+
+static char *construct_path(char *directory, char *arg) {
+    char *base_path;
+	char *cmd_path;
+
+    base_path = ft_strjoin(directory, "/");
+    if (!base_path)
+        return (NULL);
+    
+    cmd_path = fv_strjoin_and_free(base_path, arg);
+    if (!cmd_path)
+	{	
+       free(base_path);
+	   return (NULL);
+	}
+    return (cmd_path);
+}
 
 static char	*check_path(char *path, char *arg)
 {
@@ -20,7 +37,7 @@ static char	*check_path(char *path, char *arg)
 	token = fv_strtok(path, ":");
 	while (token)
 	{
-		full_path = fv_strjoin_and_free(ft_strjoin(token, "/"), arg);
+		full_path = construct_path(token, arg);
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
 		free(full_path);
@@ -47,5 +64,3 @@ char	*get_path(char *arg, char **env)
 	}
 	return (NULL);
 }
-
-//---> full path of the command

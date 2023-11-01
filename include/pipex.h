@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:03:26 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/10/12 15:07:37 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/02 00:52:20 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,19 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+
 typedef struct s_info
 {
-	char	**argv;
+	char	**av;
 	char	**env;
-	int		fd[2]; //read--> 0 | write--> 1
-	char	*cmd_path;
+	int 	ac;
+	int		in_fd;
+	int		out_fd;
+	int		p_fd[2];
 	bool	here_doc;
-	pid_t	*pid;
 }	t_info;
+
+t_info	init_info(int ac, char **av, char **envp);
 
 // file_validators
 char	*validate_input_file(char *in_file);
