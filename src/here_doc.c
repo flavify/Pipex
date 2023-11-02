@@ -6,18 +6,18 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:58:39 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/11/02 00:52:48 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/02 03:55:17 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-static bool is_here_doc(t_info *pipex, char **argv)
-{
-	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-		return (pipex->here_doc = true);
-	return (pipex->here_doc = false);
-}
+// static bool is_here_doc(t_info *pipex, char **argv)
+// {
+// 	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+// 		return (pipex->here_doc = true);
+// 	return (pipex->here_doc = false);
+// }
 
 void	get_here_doc(char **argv)
 {
@@ -49,4 +49,5 @@ void	get_here_doc(char **argv)
 	close(fd[0]); 	
 	close(fd[1]);
 }
+
 

@@ -6,7 +6,7 @@
 #    By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/21 15:11:16 by fvoicu            #+#    #+#              #
-#    Updated: 2023/11/02 01:04:52 by fvoicu           ###   ########.fr        #
+#    Updated: 2023/11/02 06:46:19 by fvoicu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,29 +21,29 @@ INCLUDES := -I ./include -I ${LIB}/libft
 SRC := exec.c here_doc.c main.c path_finder.c utils.c
 OBJ := $(addprefix src/, $(SRC:.c=.o))
 
-all: $(NAME) LIB
+all: LIB $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIB) $(INCLUDES) -o $(NAME)
+$(NAME): LIB $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) $(LIB)/lib.a $(INCLUDES) -o $(NAME)
 	
 LIB:
-	@if [ -d ${LIB} ]; then \
-		echo "Libft already exists"; \
-	else \
+	@if [ ! -d ${LIB} ]; then \
 		git clone https://github.com/dendeaisd/Lib.git ${LIB}; \
 	fi
-	make --directory=${LIB}
+	make --directory=Lib/
 
 clean:
 	@rm -rf $(OBJ)
 	
-fclean:
+fclean: clean
 	make fclean --directory=${LIB}
-	@rm -rf ${LIB}
+	@rm -rf $(NAME)
 
-all: fclean all
+bonus: all
 
-.PHONY: all clean fclean re
+re: fclean all
+
+.PHONY: all LIB clean fclean bonus re

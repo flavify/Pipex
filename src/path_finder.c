@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 00:21:44 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/11/02 00:49:54 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/02 06:38:31 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ char	*get_path(char *arg, char **env)
 	char	*path;
 
 	path = NULL;
+	if (!env || !arg)
+		return (ft_strdup(arg));
 	while (*env)
 	{
 		if (ft_strncmp(*env, "PATH=", 5) == 0)
@@ -62,5 +64,5 @@ char	*get_path(char *arg, char **env)
 		}
 		++env;
 	}
-	return (NULL);
+	return (ft_strdup(arg));
 }

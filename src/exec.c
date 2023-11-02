@@ -6,32 +6,40 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 00:09:03 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/11/02 00:26:42 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/02 07:00:15 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-static void exec(char *av, char **env)
+static int exec(char *av, char **env)
 {
 	char **cmd;
 	char *binary;
+	int  ret_status;
 	
-	cmd = ft_split(av, " ");
+	ret_status = 0;
+	cmd = fv_split(av,' ');
 	if (!cmd)
+	{	
 		error("Error getting commands", NULL, 1);
+		return (1);
+	}
 	binary = get_path(cmd[0], env);
 	if (!binary)
 	{
-		fv_free_array(cmd);
-		error("Command not found", cmd, 1);
+		error("command not found", cmd[0], 127);
+		return (127);
 	}
 	if (execve(binary, cmd, env) == -1)
 	{
 		free(binary);
-		fv_free_array(cmd);
 		error("Error executing command", NULL, 1);
+		return (1);
 	}
+	free(binary);
+	fv_free_array(cmd);
+	return (0);
 }
 
 static void child(char *cmd, char **env, int *p_fd)
@@ -53,8 +61,6 @@ static void	parent(int *p_fd, pid_t *pid)
 		error("Error waiting for child process.", NULL, 1);
 	if (close(p_fd[0]) == -1)
 		error("Error closing pipe read end.", NULL, 1);
-	
-	del_info(); // this!!
 }
 
 static void	pipex(char *cmd, char **env)
@@ -73,16 +79,22 @@ static void	pipex(char *cmd, char **env)
 		parent(p_fd, &pid);
 }
 
-void	exec_cmds(t_info *info)
+int	exec_cmds(t_info *info)
 {
 	int i;
-
+	int status;
+	
 	i = 1;
+	status = 0;
 	if (info->here_doc)
 		i = 2;
 	while (++i < info->ac - 2)
+	{
 		pipex(info->av[i], info->env);
+		if (status != 0)
+			return (status);
+	}
 	if (dup2(info->out_fd, STDOUT_FILENO) == -1)
 		error("Error duplicating output file descriptor.", NULL, 1);
-	exec(info->av[info->ac -2], info->env);
+	return (exec(info->av[info->ac -2], info->env));
 }
