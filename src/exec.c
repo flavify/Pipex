@@ -6,22 +6,20 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 00:09:03 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/11/02 07:00:15 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/03 01:50:59 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-static int exec(char *av, char **env)
+static int	exec(char *av, char **env)
 {
-	char **cmd;
-	char *binary;
-	int  ret_status;
-	
-	ret_status = 0;
-	cmd = fv_split(av,' ');
+	char	**cmd;
+	char	*binary;
+
+	cmd = fv_split(av, ' ');
 	if (!cmd)
-	{	
+	{
 		error("Error getting commands", NULL, 1);
 		return (1);
 	}
@@ -42,7 +40,7 @@ static int exec(char *av, char **env)
 	return (0);
 }
 
-static void child(char *cmd, char **env, int *p_fd)
+static void	child(char *cmd, char **env, int *p_fd)
 {
 	if (close(p_fd[0]) == -1)
 		error("Error closing pipe read end.", NULL, 1);
@@ -57,7 +55,7 @@ static void	parent(int *p_fd, pid_t *pid)
 		error("Error closing pipe write end.", NULL, 1);
 	if (dup2(p_fd[0], STDIN_FILENO) == -1)
 		error("Error duplicating pipe read end.", NULL, 1);
-	if (waitpid(*pid, NULL, 0) == -1)
+	if (waitpid(*pid, NULL, WNOHANG) == -1)
 		error("Error waiting for child process.", NULL, 1);
 	if (close(p_fd[0]) == -1)
 		error("Error closing pipe read end.", NULL, 1);
@@ -65,8 +63,8 @@ static void	parent(int *p_fd, pid_t *pid)
 
 static void	pipex(char *cmd, char **env)
 {
-	int p_fd[2];
-	pid_t pid;
+	int		p_fd[2];
+	pid_t	pid;
 
 	if (pipe(p_fd) == -1)
 		error("Error creating pipe.", NULL, 1);
@@ -81,9 +79,9 @@ static void	pipex(char *cmd, char **env)
 
 int	exec_cmds(t_info *info)
 {
-	int i;
-	int status;
-	
+	int	i;
+	int	status;
+
 	i = 1;
 	status = 0;
 	if (info->here_doc)
