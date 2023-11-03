@@ -6,38 +6,35 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 00:09:03 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/11/03 01:50:59 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/03 05:33:55 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-static int	exec(char *av, char **env)
+static void	exec(char *av, char **env)
 {
 	char	**cmd;
 	char	*binary;
 
 	cmd = fv_split(av, ' ');
-	if (!cmd)
+	if (!cmd || !cmd[0])
 	{
+		fv_free_array(cmd);
 		error("Error getting commands", NULL, 1);
-		return (1);
 	}
 	binary = get_path(cmd[0], env);
 	if (!binary)
 	{
+		fv_free_array(cmd);
 		error("command not found", cmd[0], 127);
-		return (127);
 	}
 	if (execve(binary, cmd, env) == -1)
 	{
 		free(binary);
+		fv_free_array(cmd);
 		error("Error executing command", NULL, 1);
-		return (1);
 	}
-	free(binary);
-	fv_free_array(cmd);
-	return (0);
 }
 
 static void	child(char *cmd, char **env, int *p_fd)
@@ -77,22 +74,16 @@ static void	pipex(char *cmd, char **env)
 		parent(p_fd, &pid);
 }
 
-int	exec_cmds(t_info *info)
+void	exec_cmds(t_info *info)
 {
 	int	i;
-	int	status;
 
 	i = 1;
-	status = 0;
 	if (info->here_doc)
 		i = 2;
 	while (++i < info->ac - 2)
-	{
 		pipex(info->av[i], info->env);
-		if (status != 0)
-			return (status);
-	}
 	if (dup2(info->out_fd, STDOUT_FILENO) == -1)
 		error("Error duplicating output file descriptor.", NULL, 1);
-	return (exec(info->av[info->ac -2], info->env));
+	exec(info->av[info->ac -2], info->env);
 }

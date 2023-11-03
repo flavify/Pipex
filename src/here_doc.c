@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:58:39 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/11/03 01:54:19 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/03 05:40:14 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	get_here_doc(char **argv)
 	free(delimiter);
 	if (line)
 		free(line);
+	get_next_line(-1);
 	dup2(fd[0], 0);
 	close(fd[0]);
 	close(fd[1]);

@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:02:22 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/11/03 02:01:06 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/03 03:30:39 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ void	error(const char *msg, const char *cmd_name, int exit_status)
 {
 	char	*message;
 	char	*temp;
+	int		i;
 
+	i = 2;
 	if (cmd_name)
 	{
 		message = ft_strjoin("pipex: ", cmd_name);
@@ -46,5 +48,7 @@ void	error(const char *msg, const char *cmd_name, int exit_status)
 		message = ft_strjoin("pipex: ", msg);
 	ft_putendl_fd(message, 2);
 	free(message);
+	while (++i < 30)
+		close(i);
 	exit(exit_status);
 }

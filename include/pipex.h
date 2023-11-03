@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 05:03:26 by fvoicu            #+#    #+#             */
-/*   Updated: 2023/11/02 06:01:18 by fvoicu           ###   ########.fr       */
+/*   Updated: 2023/11/03 03:33:00 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_info
 
 t_info	init_info(int ac, char **av, char **envp);
 
-int		exec_cmds(t_info *info);
+void	exec_cmds(t_info *info);
 void	get_here_doc(char **argv);
 char	*get_path(char *arg, char **env);
 void	error(const char *msg, const char *cmd_name, int exit_status);

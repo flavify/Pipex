@@ -6,7 +6,7 @@
 #    By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/21 15:11:16 by fvoicu            #+#    #+#              #
-#    Updated: 2023/11/02 06:46:19 by fvoicu           ###   ########.fr        #
+#    Updated: 2023/11/03 05:45:41 by fvoicu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,6 @@ CFLAGS := -Wall -Wextra -Werror -g -fsanitize=address
 LIB := ./Lib
 
 INCLUDES := -I ./include -I ${LIB}/libft
-
 SRC := exec.c here_doc.c main.c path_finder.c utils.c
 OBJ := $(addprefix src/, $(SRC:.c=.o))
 
